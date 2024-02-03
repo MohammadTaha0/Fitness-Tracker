@@ -16,3 +16,6 @@ body {
 .min-h-100-vh{
   min-height: 90vh !important;
 }
+button:focus, input:focus{
+  box-shadow: none !important;
+}

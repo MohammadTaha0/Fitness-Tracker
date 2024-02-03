@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+const bcryptjs = require("bcryptjs");
 const userShema = new mongoose.Schema({
     name: {
         type: String,
@@ -13,24 +13,21 @@ const userShema = new mongoose.Schema({
         type: String,
         required: [true, "password must be provided"],
     },
-    // salt: {
-    //     type: String,
-    // }
+
 });
 
-// userShema.pre("save", async function (next) {
-//     try {
-//         const salt = await bcrypt.genSalt(10);
+userShema.pre("save", async function (next) {
+    try {
 
-//         const hashedPassword = await bcrypt.hash(this.password, salt);
+        const hashedPassword = await bcryptjs.hash(this.password, 10);
 
-//         this.password = hashedPassword;
-//         this.salt = salt;
-//         next();
-//     } catch (error) {
-//         next(error);
-//     }
-// });
+        this.password = hashedPassword;
+        // this.salt = salt;
+        next();
+    } catch (error) {
+        next(error);
+    }
+});
 
 const User = mongoose.model("User", userShema);
 
