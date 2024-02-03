@@ -1,14 +1,15 @@
 import React, { useEffect } from 'react'
 import { NavLink } from 'react-router-dom';
+import Auth from '../services/authServices';
 export default function Navbar() {
+    const { isAuthenticated } = Auth();
     useEffect(() => {
+
         const currentPath = window.location.pathname;
 
-        console.log(currentPath)
         document.querySelector(".nav-link").classList.remove("active");
         const activeLink = document.querySelector(`.nav-link[href='${currentPath}']`);
 
-        console.log(activeLink)
         if (activeLink) {
             activeLink.classList.add('active');
         }
@@ -30,7 +31,7 @@ export default function Navbar() {
                         </h4>
                         <h6 className='p-0 m-0'>FitnessTracker</h6>
                     </NavLink>
-                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="/navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
@@ -41,11 +42,21 @@ export default function Navbar() {
                             <li className="nav-item">
                                 <NavLink className="nav-link" to="/about">About</NavLink>
                             </li>
+                            {
+                                isAuthenticated() &&
+                                <li className='nav-item'>
+                                    <NavLink to='/profile' className='nav-link'><i className='fa-light fa-user-circle '></i> Profile</NavLink>
+                                </li>
+                            }
                             <li>
                                 <div className="input-group m-0 p-0 p-2">
-                                    <NavLink to="/login" className='btn btn-outline-info my-0 text-capitalize px-4 btn-sm'>login</NavLink>
-                                    <NavLink to="/register" className='btn btn-outline-info my-0 text-capitalize px-4 btn-sm'>Register</NavLink>
-
+                                    {!isAuthenticated() ?
+                                        <>
+                                            <NavLink to="/register" className='btn btn-outline-info my-0 text-capitalize px-4 btn-sm'>Register</NavLink>
+                                            <NavLink to="/login" className='btn btn-outline-info my-0 text-capitalize px-4 btn-sm'>login</NavLink>
+                                        </> :
+                                        <NavLink to="/logout" className='btn btn-outline-danger my-0 text-capitalize px-4 btn-sm'>logout</NavLink>
+                                    }
                                 </div>
                             </li>
                         </ul>

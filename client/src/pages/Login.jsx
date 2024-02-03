@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
+import  Auth  from '../services/authServices';
+import { useNavigate } from 'react-router-dom';
 
-export default function Register() {
-  const [name, setName] = useState("");
+export default function Login() {
+  const {setToken} = Auth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [btnDisabled, setBtnDisabled] = useState(false);
@@ -30,27 +32,24 @@ export default function Register() {
   });
 
   const emptyForm = () => {
-    setName("");
     setEmail("");
     setPassword("");
     setBtnDisabled(false);
   }
 
 
+  const navigate = useNavigate();
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
       let formData = {
-        name: name,
         email: email,
         password: password
       };
       setMsgs([]);
       setTypes([]);
 
-      if (name == "") {
-        alert_("name Is required", 'danger');
-      }
+
       if (email == "") {
         alert_("email Is required", 'danger');
 
@@ -58,7 +57,7 @@ export default function Register() {
       if (password == "") {
         alert_("password Is required", 'danger');
       }
-      if (name == "" || email == "" || password == "") {
+      if (email == "" || password == "") {
         return false;
       };
       setBtn({
@@ -66,14 +65,20 @@ export default function Register() {
         disabled: true,
       });
 
-      let response = await axios.post("http://localhost:5000/api/register", formData);
+      let response = await axios.post("http://localhost:5000/api/auth/login", formData);
       setBtn({
         loading: false,
         disabled: false,
-      }); if (response.data.status === 200) {
+      });
+      if (response.data.status === 200) {
         emptyForm();
         alert_(response.data.msg, 'success');
+        setToken(response.data.token);
+        navigate('/');
       } else if (response.data.status === 443) {
+        alert_(response.data.msg, 'danger');
+      }
+      else if (response.data.status === 500) {
         alert_(response.data.msg, 'danger');
       }
       else {
@@ -81,7 +86,8 @@ export default function Register() {
       }
 
     } catch (error) {
-      alert_("Something Went Wrong!", 'danger');
+      alert_("Something Went Wrong! ", 'danger');
+      console.log(error)
       setBtn({
         loading: false,
         disabled: false,
@@ -103,15 +109,10 @@ export default function Register() {
       </div>
       <form className='row row-cols-1 mx-0 col-md-4 col-sm-7 col-11 mx-auto shadow border rounded-3 gy-3 p-0 pb-4' onSubmit={handleRegister}>
         <div className="col w-100 bg-dark text-light text-center py-3 mt-0">
-          <h1 className='p-0 my-0 mb-1 text-uppercase'>Register</h1>
+          <h1 className='p-0 my-0 mb-1 text-uppercase'>Login</h1>
           <p className='py-0 my-0 fs-8 col-md-7 col-11 m-auto text-light'>
             Elevate your fitness journey! Register now and start tracking your progress with us. Your path to a healthier, stronger you begins here.
           </p>
-        </div>
-
-        <div className="col px-4">
-          <label htmlFor="">Name:</label>
-          <input type="text" placeholder='Name' name='name' value={name} onChange={(e) => setName(e.target.value)} className='form-control' />
         </div>
         <div className="col px-4">
           <label htmlFor="">Email:</label>
