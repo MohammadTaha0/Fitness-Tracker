@@ -1,5 +1,6 @@
 const TOKEN_KEY = "jwt";
 
+import axios from 'axios';
 import React, { useState } from 'react'
 
 export default function Auth() {
@@ -20,11 +21,17 @@ export default function Auth() {
     }
 
     const logout = () => {
-         removeToken();
+        removeToken();
     };
     const isAuthenticated = () => {
         return authenticated;
     };
-    return { getToken, setToken, removeToken, logout, isAuthenticated };
+    const authAxios = axios.create({
+        baseURL: 'http://localhost:5000/api', // Replace with your API base URL
+        headers: {
+            'Authorization': `${getToken()}`
+        }
+    });
+    return { getToken, setToken, removeToken, logout, isAuthenticated, authAxios };
 }
 

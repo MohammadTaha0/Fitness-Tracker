@@ -45,7 +45,7 @@ const login = async (req, res) => {
                 })
             }
             if (data) {
-                const token = jwt.sign({ email: user.email }, process.env.SECRET_TOKEN);
+                const token = jwt.sign({ id: user._id }, process.env.SECRET_TOKEN);
                 return res.status(200).json({
                     status: 200,
                     msg: "Login Success!",
@@ -62,7 +62,28 @@ const login = async (req, res) => {
     });
 
 }
-const change_name = async (req, res) => {
-    return res.status(200).json({status: 200, body: req.body});
+const get_user = async (req, res) => {
+    let user = await User.findById(req.user.id).select("-password");
+    if (!user) {
+        return res.status(200).json({ status: 443, msg: "User Doesn't Exist!" });
+    }
+    return res.status(200).json({ status: 200, data: user });
 }
-module.exports = { register, login, change_name };
+const update_profile = async (req, res) => {
+    let user = await User.findById(req.user.id);
+    if (req.body.name == "" && req.body.email == "" && req.body.password == "") {
+        return res.status(200).json({ status: 443, msg: "Please Fill Atleast One FIeld" });
+    }
+    if(req.body.name){
+        user.name = req.body.name;
+    }
+    if(req.body.email){
+        user.email = req.body.email;
+    }
+    if(req.body.password){
+        user.password = req.body.password;
+    }
+    await user.save();
+    return res.status(200).json({ status: 200, msg: "Updated" });
+}
+module.exports = { register, login, update_profile, get_user };
