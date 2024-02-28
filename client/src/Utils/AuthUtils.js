@@ -4,6 +4,7 @@ export default function AuthUtils() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [profile, setProfile] = useState(null)
 
     const alert_ = (msg, type) => {
         setMsgs(prevMsgs => [...prevMsgs, msg]);
@@ -37,5 +38,5 @@ export default function AuthUtils() {
         setBtnDisabled(false);
     }
 
-    return { alert_, showAlert, emptyForm, btn, setBtn, setMsgs, msgs, setTypes, email, setEmail, password, setPassword, name, setName }
+    return { alert_, showAlert, emptyForm, btn, setBtn, setMsgs, msgs, setTypes, email, setEmail, password, setPassword, name, setName, profile, setProfile }
 }

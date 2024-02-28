@@ -21,7 +21,7 @@ import Footer from './components/Footer';
 function App() {
   const [loader, setLoader] = useState(true);
   const { isAuthenticated, logout, setToken, getToken, authAxios } = Auth();
-  const { alert_, setBtn, setMsgs, setTypes, emptyForm, showAlert, email, setEmail, password, setPassword, name, setName, btn } = AuthUtils();
+  const { alert_, setBtn, setMsgs, setTypes, emptyForm, showAlert, email, setEmail, password, setPassword, name, setName, btn, profile, setProfile } = AuthUtils();
   const Logout = () => {
     useEffect(() => {
       logout();
@@ -33,6 +33,7 @@ function App() {
     try {
       setLoader(true);
       let formData = {
+        file: profile,
         name: name,
         email: email,
         password: password
@@ -49,12 +50,23 @@ function App() {
         setLoader(false);
         return false;
       };
+     
+
+      if (profile !== null) {
+        let size = 2 * 1024 * 1024;
+        if (profile.size > size) {
+          alert_("File size should less than 2 MB.!", "danger");
+          setLoader(false);
+          return;
+        }
+      }
       setBtn({
         loading: true,
         disabled: true,
       });
-
-      let response = await authAxios.post("update-profile", formData);
+      let response = await authAxios.post("update-profile", formData,{
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
       setBtn({
         loading: false,
         disabled: false,
@@ -157,7 +169,7 @@ function App() {
         <Route path="/logout" element={<Logout />} />
         <Route
           path="/profile"
-          element={<PrivateRoute handleUpdateProfile={handleUpdateProfile} name={name} email={email} password={password} setName={setName} setEmail={setEmail} setPassword={setPassword} loader={loader} setLoader={setLoader} Component={Profile} />}
+          element={<PrivateRoute handleUpdateProfile={handleUpdateProfile} name={name} email={email} password={password} setName={setName} setEmail={setEmail} setPassword={setPassword} loader={loader} setLoader={setLoader} Component={Profile} profile={profile} setProfile={setProfile} alert_={alert_} />}
         />
       </Routes>
       <Footer setLoader={setLoader} />
