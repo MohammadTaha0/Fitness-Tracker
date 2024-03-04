@@ -49,9 +49,14 @@ export default function Navbar({ isAuthenticated, loader }) {
                             </li>
                             {
                                 isAuthenticated() &&
-                                <li className='nav-item'>
-                                    <NavLink to='/profile' className='nav-link'><i className='fa-light fa-user-circle '></i> Profile</NavLink>
-                                </li>
+                                <>
+                                    <li className='nav-item'>
+                                        <NavLink to='/profile' className='nav-link'><i className='fa-light fa-user-circle '></i> Profile</NavLink>
+                                    </li>
+                                    <li className='nav-item'>
+                                        <NavLink to='/workout' className='nav-link'><i className='fa-light fa-dumbbell '></i> Workout</NavLink>
+                                    </li>
+                                </>
                             }
                             <li>
                                 <div className="input-group m-0 p-0 p-2">

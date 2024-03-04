@@ -19,3 +19,12 @@ body {
 button:focus, input:focus{
   box-shadow: none !important;
 }
+.alert{
+  animation: fade_in .5s ease-in-out;
+}
+@keyframes fade_in{
+  0%{
+    transform: scale(0%);
+    opacity: 0;
+  }
+}

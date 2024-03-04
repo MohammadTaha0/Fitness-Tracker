@@ -14,6 +14,7 @@ import Register from './pages/Register';
 import './App.css';
 import PrivateRoute from './Routes/PrivateRoute';
 import Profile from './pages/Profile';
+import Workout from './pages/Workout';
 import Auth from './services/authServices';
 import AuthUtils from './Utils/AuthUtils';
 import Footer from './components/Footer';
@@ -150,7 +151,7 @@ function App() {
   return (
     <Router>
       <Navbar loader={loader} isAuthenticated={isAuthenticated} />
-      <div className='row mx-0 row-cols-1 position-fixed col-md-4 col-12 end-0 gy-0' style={{ "bottom": "0%" }}>
+      <div className='row mx-0 row-cols-1 position-fixed col-md-4 col-12 end-0 gy-0' style={{ "bottom": "0%", "zindex":"999999 !important" }}>
         {
           showAlert.show &&
           showAlert.msg.map((msg, index) => (
@@ -170,6 +171,10 @@ function App() {
         <Route
           path="/profile"
           element={<PrivateRoute handleUpdateProfile={handleUpdateProfile} name={name} email={email} password={password} setName={setName} setEmail={setEmail} setPassword={setPassword} loader={loader} setLoader={setLoader} Component={Profile} profile={profile} setProfile={setProfile} alert_={alert_} />}
+        />
+        <Route
+          path="/workout"
+          element={<PrivateRoute loader={loader} setLoader={setLoader} Component={Workout}alert_={alert_} setMsgs={setMsgs} setTypes={setTypes} />}
         />
       </Routes>
       <Footer setLoader={setLoader} />
