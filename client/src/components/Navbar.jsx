@@ -22,7 +22,7 @@ export default function Navbar({ isAuthenticated, loader }) {
 
     return (
         <>
-            <nav className="navbar navbar-expand-lg navbar-dark bg-dark w-100">
+            <nav className="navbar navbar-expand-lg navbar-dark bg-dark w-100 sticky-top">
                 <div className="container-fluid">
                     <NavLink className="navbar-brand text-center text-info" to="/">
                         <h4 className="p-0 m-0 d-flex align-items-center justify-content-center gap-1">
@@ -55,6 +55,9 @@ export default function Navbar({ isAuthenticated, loader }) {
                                     </li>
                                     <li className='nav-item'>
                                         <NavLink to='/workout' className='nav-link'><i className='fa-light fa-dumbbell '></i> Workout</NavLink>
+                                    </li>
+                                    <li className='nav-item'>
+                                        <NavLink to='/nutrition' className='nav-link'><i className='fa-light fa-dumbbell '></i> Nutrition</NavLink>
                                     </li>
                                 </>
                             }

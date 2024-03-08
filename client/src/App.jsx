@@ -15,6 +15,7 @@ import './App.css';
 import PrivateRoute from './Routes/PrivateRoute';
 import Profile from './pages/Profile';
 import Workout from './pages/Workout';
+import Nutrition from './pages/Nutrition';
 import Auth from './services/authServices';
 import AuthUtils from './Utils/AuthUtils';
 import Footer from './components/Footer';
@@ -175,6 +176,10 @@ function App() {
         <Route
           path="/workout"
           element={<PrivateRoute loader={loader} setLoader={setLoader} Component={Workout}alert_={alert_} setMsgs={setMsgs} setTypes={setTypes} />}
+        />
+        <Route
+          path="/nutrition"
+          element={<PrivateRoute loader={loader} setLoader={setLoader} Component={Nutrition}alert_={alert_} setMsgs={setMsgs} setTypes={setTypes} />}
         />
       </Routes>
       <Footer setLoader={setLoader} />
