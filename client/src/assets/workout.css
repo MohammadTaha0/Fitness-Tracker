@@ -1,0 +1,39 @@
+#workout-body {
+    position: relative;
+}
+
+#workout-body::before {
+    content: ''; 
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%; 
+    height: 100%;
+    background: url('../../public/muscular-young-man-lifting-weights-black-background.jpg') no-repeat;
+    background-size: cover;
+    opacity: 1; 
+    z-index: -1 !important;
+}
+.form-select, .form-control,.form-control:focus,.form-select:focus option{
+    background: transparent;
+    border-color: gray;
+    color: gray
+}
+.form-select::placeholder, .form-control::placeholder{
+    color: gray
+}
+.form-control:focus, .form-select:focus{
+    border-color: white;
+}
+.text-primary{
+    color: gray !important;
+}
+.btn-outline-primary{
+    color: gray !important;
+    border-color: gray !important;
+}
+.btn-outline-primary:hover{
+    color: black !important;
+    border-color: gray !important;
+    background-color: gray !important;
+}

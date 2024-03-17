@@ -152,7 +152,7 @@ function App() {
   return (
     <Router>
       <Navbar loader={loader} isAuthenticated={isAuthenticated} />
-      <div className='row mx-0 row-cols-1 position-fixed col-md-4 col-12 end-0 gy-0' style={{ "bottom": "0%", "zindex":"999999 !important" }}>
+      <div className='row mx-0 row-cols-1 position-fixed col-md-4 col-12 end-0 gy-0' id='alert-row' style={{ "bottom": "0%"}}>
         {
           showAlert.show &&
           showAlert.msg.map((msg, index) => (
