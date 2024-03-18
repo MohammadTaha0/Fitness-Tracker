@@ -1,10 +1,10 @@
 import React from 'react'
 import Auth from '../services/authServices'
 import section1 from '../../public/home.jpg';
-import calories from '../../public/profile.jpg';
+import cardio from '../../public/profile.jpg';
 import macros from '../../public/login.jpg';
 import strength from '../../public/muscular-young-man-lifting-weights-black-background.jpg';
-import cardio from '../../public/black-white-photo-muscular-build-man-using-sports-chalk-hands-while-weightlifting-gym.jpg';
+import calories from '../../public/black-white-photo-muscular-build-man-using-sports-chalk-hands-while-weightlifting-gym.jpg';
 import { NavLink } from 'react-router-dom';
 import $ from 'jquery';
 
@@ -13,9 +13,9 @@ export default function Home() {
     const { isAuthenticated } = Auth();
     return (
         <>
-            <div style={{ "height": "90vh" }} className='position-relative overflow-hidden section-1'>
+            <div style={{ "height": "130vh" }} className='position-relative overflow-hidden section-1'>
                 <img src={section1} className='w-100 d-block h-100 object-fit-cover' alt="" />
-                <div className=' position-fixed start-0 text-center w-100 z-1ndex--1 light-light-bg' style={{ "top": "40%" }}>
+                <div className=' position-fixed start-0 text-center w-100 z-1ndex--1 llight-light-bg' style={{ "top": "40%" }}>
                     <h1 className='m-0 p-0 text-white col-md-8 mx-auto fw-bold p-5 rounded-pill'>Train hard, track progress, transform yourself.</h1>
                     <div className="input-group p-0 m-0 my-0 justify-content-center col-md-8 mx-auto">
                         <NavLink to="/workout" className="btn btn-outline-light">
