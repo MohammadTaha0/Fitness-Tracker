@@ -49,6 +49,9 @@ button:focus, input:focus {
 .bg-highlight {
   background: rgb(3, 188, 255);
 }
+.light-light-bg{
+  background: rgba(0, 0, 0, 0.306);
+}
 
 @keyframes highlight {
   0% {
@@ -58,4 +61,10 @@ button:focus, input:focus {
   100% {
     background-color: transparent;
   }
+}
+.section-1{
+  z-index: 0 !important;;
+}
+.text-transparent{
+  color: transparent !important;;
 }
