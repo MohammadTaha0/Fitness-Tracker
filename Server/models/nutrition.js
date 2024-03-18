@@ -35,4 +35,4 @@ const nutritionSchema = new mongoose.Schema({
 
 const Nutrition = mongoose.model("Nutrition", nutritionSchema);
 
-module.exports = Workout;
+module.exports = Nutrition;

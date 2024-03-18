@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import AuthUtils from '../Utils/AuthUtils';
 import Auth from '../services/authServices';
 import Avator from '../../public/avator.jpg';
+import ProfileBg from '../../public/profile.jpg';
 export default function Profile({ handleUpdateProfile, name, email, password, setName, setEmail, setPassword, loader, setLoader, setProfile, profile, alert_ }) {
   const { authAxios } = Auth();
   const [prevImage, setPrevImage] = useState(Avator);
@@ -35,7 +36,7 @@ export default function Profile({ handleUpdateProfile, name, email, password, se
 
   return (
     <>
-      <div className="row justify-content-center align-items-center mx-auto" style={{ "minHeight": "90vh" }} >
+      <div className="row justify-content-center align-items-center mx-auto" id='login-body' style={{ "minHeight": "90vh"}} >
         <div className="col-md-4 col-12 border rounded-3 shadow row p-3 ">
           <form onSubmit={(e) => { e.preventDefault(); handleUpdateProfile(); }} className="input-group mx-0 px-0 gap-3">
             <h2 className='text-center fw-bold w-100 text-primary'>Update Profile</h2>

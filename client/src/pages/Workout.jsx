@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import AuthUtils from '../Utils/AuthUtils';
 import Auth from '../services/authServices';
 import '../assets/workout.css';
+import Chart from 'chart.js/auto';
 import $ from 'jquery';
-export default function Profile({ loader, setLoader, alert_, setMsgs, setTypes }) {
+
+export default function Workout({ loader, setLoader, alert_, setMsgs, setTypes }) {
   const { authAxios } = Auth();
   const [name, setName] = useState();
   const [sets, setSets] = useState();
@@ -13,23 +14,165 @@ export default function Profile({ loader, setLoader, alert_, setMsgs, setTypes }
   const [data, setData] = useState([]);
   const [id, setId] = useState();
   const [dId, setDId] = useState();
-
+  const [strengthData, setStrengthData] = useState(null);
+  const [cardioData, setCardioData] = useState(null);
+  const [chartDates, setChartDates] = useState([]);
+  const [myChart, setMyChart] = useState();
+  const [myChart1, setMyChart1] = useState();
   const fetching_data = async () => {
     try {
-
+      setLoader(true);
       const res = await authAxios.get("get-workout");
       if (res.data.status === 200) {
         console.log(res.data.data)
         setData(res.data.data);
       } else {
         alert_("Something Went Wrong!", 'danger');
+        console.log("Something Went Wrong Fetching Data");
       }
-    } catch {
+      setLoader(false);
+
+    } catch (err) {
       alert_("Something Went Wrong!", 'danger');
+      console.log(err);
+      setLoader(false);
+
     }
   }
+  const fetch_strength = async () => {
+    try {
+      const res = await authAxios.get("get-workout-by-name/strength");
+      if (res.data.status === 200) {
+        const strength = res.data.data;
+        setStrengthData(strength);
+
+        const ctx = document.getElementById('workoutChart-strength');
+        if (ctx) {
+          const setsData = Object.keys(strength).map(date => strength[date].totalSets);
+          const repsData = Object.keys(strength).map(date => strength[date].totalReps);
+          const weightsData = Object.keys(strength).map(date => strength[date].averageWeight);
+          if (myChart) {
+            myChart.destroy();
+          }
+         setMyChart (new Chart(ctx, {
+            type: 'bar',
+            data: {
+              labels: Object.keys(strength),
+              datasets: [
+                {
+                  label: 'Total Sets',
+                  data: setsData,
+                  backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                  borderColor: 'rgba(255, 99, 132, 1)',
+                  borderWidth: 1,
+                },
+                {
+                  label: 'Total Reps',
+                  data: repsData,
+                  backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                  borderColor: 'rgba(54, 162, 235, 1)',
+                  borderWidth: 1,
+                },
+                {
+                  label: 'Average Weight',
+                  data: weightsData,
+                  backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                  borderColor: 'rgba(75, 192, 192, 1)',
+                  borderWidth: 1,
+                },
+              ],
+            },
+            options: {
+              scales: {
+                y: {
+                  beginAtZero: true,
+                },
+              },
+            },
+          }))
+        }
+
+      } else {
+        alert_("Something Went Wrong!", 'danger');
+        console.log("Something Went Wrong Fetching Data");
+
+      }
+    } catch (err) {
+      alert_("Something Went Wrong!", 'danger');
+      console.log(err)
+    }
+  }
+  const fetch_cardio = async () => {
+    try {
+      const res = await authAxios.get("get-workout-by-name/cardio");
+      if (res.data.status === 200) {
+        const cardio = res.data.data;
+        setCardioData(cardio);
+        const ctx1 = document.getElementById('workoutChart-cardio');
+
+        if (ctx1) {
+          const setsData = Object.keys(cardio).map(date => cardio[date].totalSets);
+          const repsData = Object.keys(cardio).map(date => cardio[date].totalReps);
+          const weightsData = Object.keys(cardio).map(date => cardio[date].averageWeight);
+          if (myChart1) {
+            myChart1.destroy();
+          }
+          setMyChart1(new Chart(ctx1, {
+            type: 'bar',
+            data: {
+              labels: Object.keys(cardio),
+              datasets: [
+                {
+                  label: 'Total Sets',
+                  data: setsData,
+                  backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                  borderColor: 'rgba(255, 99, 132, 1)',
+                  borderWidth: 1,
+                },
+                {
+                  label: 'Total Reps',
+                  data: repsData,
+                  backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                  borderColor: 'rgba(54, 162, 235, 1)',
+                  borderWidth: 1,
+                },
+                {
+                  label: 'Average Weight',
+                  data: weightsData,
+                  backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                  borderColor: 'rgba(75, 192, 192, 1)',
+                  borderWidth: 1,
+                },
+              ],
+            },
+            options: {
+              scales: {
+                x: {
+                },
+                y: {
+                  beginAtZero: true,
+                },
+              },
+            },
+          }))
+        }
+      } else {
+        alert_("Something Went Wrong!", 'danger');
+        console.log("Something Went Wrong Fetching Data");
+
+      }
+    } catch (err) {
+      alert_("Something Went Wrong!", 'danger');
+      console.log(err)
+    }
+  }
+
+
   useEffect(() => {
     fetching_data();
+    fetch_strength();
+    fetch_cardio();
+
   }, []);
   const handleSaveWorkout = async (e) => {
     e.preventDefault();
@@ -75,13 +218,15 @@ export default function Profile({ loader, setLoader, alert_, setMsgs, setTypes }
       if (response.data.status === 200) {
         alert_(response.data.msg, 'success');
         await fetching_data();
+        await fetch_strength();
+        await fetch_cardio();
         setName("");
         setSets("");
         setReps("");
         setWeight("");
         setNote("");
-        if(id){
-          document.getElementById("card-" + id).classList.add("highlight");
+        if (id) {
+          document.getElementById("card-" + id)?.classList.add("highlight");
         }
         setId("");
         // document.querySelectorAll(".highlight").classList.remove("highlight");
@@ -113,6 +258,9 @@ export default function Profile({ loader, setLoader, alert_, setMsgs, setTypes }
       if (response.data.status === 200) {
         alert_(response.data.msg, 'success');
         await fetching_data();
+        
+        await fetch_strength();
+        await fetch_cardio();
         setName("");
         setSets("");
         setReps("");
@@ -143,9 +291,10 @@ export default function Profile({ loader, setLoader, alert_, setMsgs, setTypes }
       console.log(error)
     }
   }
-
   return (
     <>
+
+
       {dId && <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
@@ -169,8 +318,10 @@ export default function Profile({ loader, setLoader, alert_, setMsgs, setTypes }
           </div>
         </div>
       </div>
-      } <div className="row justify-content-center align-items-start mx-auto gy-3" id='workout-body' style={{ "minHeight": "90vh" }} >
-        <div className="col-md-4 col-8 border rounded-3 shadow row p-3 align-items-center mt-4">
+      }
+
+      <div className="row justify-content-center align-items-start mx-auto gy-3 mb-5 " id='workout-body' style={{ "minHeight": "90vh" }} >
+        <div className="col-md-4 col-8 border rounded-3 shadow row p-3 align-items-center mt-4 light-bg">
           <form onSubmit={handleSaveWorkout} className="input-group mx-0 px-0 gap-3">
             <h2 className='text-center fw-bold w-100 text-primary'>Workout <i className='fa-light fa-dumbbell'></i></h2>
 
@@ -198,11 +349,30 @@ export default function Profile({ loader, setLoader, alert_, setMsgs, setTypes }
             }
           </form>
         </div>
+        {strengthData &&
+          <>
+            <h2 className="text-center text-bg-light text-uppercase fw-bold fw-bold ">
+              Strength
+            </h2>
+            <canvas id="workoutChart-strength" className='light-bgg'></canvas>
+          </>
+        }
+        {cardioData &&
+          <>
+            <h2 className="text-center text-bg-light text-uppercase fw-bold fw-bold ">
+              Cardio
+            </h2>
+            <canvas id="workoutChart-cardio" className='light-bgg'></canvas>
+          </>
+        }
         <div className="col-12 col-md-12 col-sm-12"></div>
-        <div className="row mx-0 px-0 row-cols-md-5 row-cols-1 col-md-11 col-12 gy-2">
-          {data.map((data_, index) => (
+        <div className="row mx-0 px-0 row-cols-md-5 row-cols-1 col-md-11 col-12 gy-2 justify-content-center">
+          {
+            loader && <span className='spinner-border spinner-border-lg border-1'></span>
+          }
+          {!loader && data.map((data_, index) => (
             <div className="col p-1" key={index}>
-              <div className={"border shadow p-1  text-center  position-relative rounded-3 border-secondary " + (id == data_._id ? 'bg-highlight' : '')} id={`card-${data_._id}`}>
+              <div className={"border shadow p-1  text-center  position-relative rounded-3 border-secondary light-bg" + (id == data_._id ? 'bg-highlight' : '')} id={`card-${data_._id}`}>
 
                 <h4 className='p-0 m-0 text-capitalize py-3 text-dark fw-bold text-primary'>{data_.name}</h4>
 
@@ -217,6 +387,8 @@ export default function Profile({ loader, setLoader, alert_, setMsgs, setTypes }
                     setReps(data_.reps);
                     setWeight(data_.weight);
                     setNote(data_.note);
+                    $('body').get(0).scrollIntoView({ behavior: 'smooth' });
+
                   }}><i className='fa-light fa-edit'></i> </button>
                   <button className='btn btn-sm btn-outline-danger border-0' onClick={() => {
                     setDId(data_._id);
@@ -250,6 +422,7 @@ export default function Profile({ loader, setLoader, alert_, setMsgs, setTypes }
           ))}
         </div>
       </div>
+
     </>
   )
 }

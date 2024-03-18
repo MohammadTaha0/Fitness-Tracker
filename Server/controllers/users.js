@@ -78,12 +78,12 @@ const update_profile = async (req, res) => {
     if (req.body.name == "" && req.body.email == "" && req.body.password == "") {
         return res.status(200).json({ status: 443, msg: "Please Fill Atleast One FIeld" });
     }
-    upload.single('profile_image')(req, res, async function (err) {
-        if (err instanceof multer.MulterError) {
-            return res.status(500).json({ status: 500, msg: 'Multer error' });
-        } else if (err) {
-            return res.status(500).json({ status: 500, msg: 'An unknown error occurred' });
-        }
+    if (true) {
+        // if (err instanceof multer.MulterError) {
+        //     return res.status(500).json({ status: 500, msg: 'Multer error' });
+        // } else if (err) {
+        //     return res.status(500).json({ status: 500, msg: 'An unknown error occurred' });
+        // }
         console.log(req.file);
         if (req.file) {
             user.profile_image = req.file.path;
@@ -99,7 +99,7 @@ const update_profile = async (req, res) => {
         }
         await user.save();
         return res.status(200).json({ status: 200, msg: "Updated" });
-    });
+    };
 
 };
 const update_profile_ = async (req, res) => {

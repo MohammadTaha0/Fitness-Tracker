@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
+import '../assets/register.css';
 
 export default function Register() {
   const [name, setName] = useState("");
@@ -89,7 +90,7 @@ export default function Register() {
     }
   }
   return (
-    <div className='min-h-100-vh row mx-0 px-0 align-items-center'>
+    <div className='min-h-100-vh row mx-0 px-0 align-items-center' id='register-body'>
       <div className='row mx-0 row-cols-1 position-fixed col-md-4 col-12 end-0 gy-0' style={{ "bottom": "0%" }}>
         {
           showAlert.show &&
@@ -101,7 +102,7 @@ export default function Register() {
           ))
         }
       </div>
-      <form className='row row-cols-1 mx-0 col-md-4 col-sm-7 col-11 mx-auto shadow border rounded-3 gy-3 p-0 pb-4' onSubmit={handleRegister}>
+      <form className='row row-cols-1 mx-0 col-md-4 col-sm-7 col-11 mx-auto shadow border rounded-3 light-bg gy-3 p-0 pb-4' onSubmit={handleRegister}>
         <div className="col w-100 bg-dark text-light text-center py-3 mt-0">
           <h1 className='p-0 my-0 mb-1 text-uppercase'>Register</h1>
           <p className='py-0 my-0 fs-8 col-md-7 col-11 m-auto text-light'>

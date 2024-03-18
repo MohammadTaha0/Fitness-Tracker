@@ -1,7 +1,9 @@
 #workout-body {
     position: relative;
 }
-
+#workoutChart{
+    height: 80vh !important;
+}
 #workout-body::before {
     content: ''; 
     position: fixed;
@@ -36,4 +38,7 @@
     color: black !important;
     border-color: gray !important;
     background-color: gray !important;
+}
+.light-bg{
+    background-color: rgba(0, 0, 0, 0.725);;
 }
