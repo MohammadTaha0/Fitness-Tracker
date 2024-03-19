@@ -1,4 +1,3 @@
-// PrivateRoute.js
 import React, { Component } from 'react';
 import { Navigate, Route } from 'react-router-dom';
 import Auth from '../services/authServices';

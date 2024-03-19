@@ -1,9 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-
 import 'bootstrap/dist/css/bootstrap.min.css';
-// import 'bootstrap/dist/js/bootstrap.min.js';
 import "bootstrap/dist/js/bootstrap.bundle.min";
-
 import { BrowserRouter as Router, Route, Routes, Navigate, Link } from 'react-router-dom';
 import Home from './pages/Home';
 import axios from 'axios';
@@ -18,7 +15,7 @@ import Workout from './pages/Workout';
 import Nutrition from './pages/Nutrition';
 import Auth from './services/authServices';
 import AuthUtils from './Utils/AuthUtils';
-import Footer from './components/Footer';
+import Footer from './components/Footer'; 
 
 function App() {
   const [loader, setLoader] = useState(true);
